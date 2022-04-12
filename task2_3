@@ -1,0 +1,206 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <ctime>
+#include <numeric>
+
+using namespace std;
+
+void generation(vector<int>& vc)
+{
+	int size1;
+	cin >> size1;
+	cout << endl;
+
+	for (int i = 0; i < size1 - (size1 * 0.1); i++)
+	{
+		vc.push_back(5);
+	}
+
+	for (int i = 0; i < (size1 * 0.1); i++)
+	{
+		vc.push_back(rand() % 100);
+	}
+
+	random_shuffle(begin(vc), end(vc));
+
+	cout << "Числа в векторе: " << endl;
+
+	for (int i = 0; i < size1; i++)
+	{
+		cout << vc[i] << endl;
+	}
+
+	cout << endl << endl;
+}
+
+void slozhenie(vector<int>& vc1, vector<int>& vc2)
+{
+
+	vector<int> vc3;
+	int maxsize;
+
+	if (vc1.size() > vc2.size())
+	{
+		maxsize = vc1.size();
+		copy(begin(vc1), end(vc1), back_inserter(vc3));
+		for (int i = 0; i < vc2.size(); i++)
+		{
+			vc3[i] = vc3[i] + vc2[i];
+		}
+	}
+	else
+	{
+		maxsize = vc2.size();
+		copy(begin(vc2), end(vc2), back_inserter(vc3));
+		for (int i = 0; i < vc1.size(); i++)
+		{
+			vc3[i] = vc3[i] + vc1[i];
+		}
+	}
+
+	for (auto el : vc3)
+	{
+		cout << el << endl;
+	}
+}
+
+void umnozhenie(vector<int>& vc1, vector<int>& vc2)
+{
+
+	vector<int> vc3;
+	int maxsize;
+
+	if (vc1.size() > vc2.size())
+	{
+		maxsize = vc1.size();
+		copy(begin(vc1), end(vc1), back_inserter(vc3));
+		for (int i = 0; i < vc2.size(); i++)
+		{
+			vc3[i] = vc3[i] * vc2[i];
+		}
+	}
+	else
+	{
+		maxsize = vc2.size();
+		copy(begin(vc2), end(vc2), back_inserter(vc3));
+		for (int i = 0; i < vc1.size(); i++)
+		{
+			vc3[i] = vc3[i] * vc1[i];
+		}
+	}
+
+	for (auto el : vc3)
+	{
+		cout << el << endl;
+	}
+}
+
+void sumkvadratchet(vector<int>& vc)
+{
+
+	auto result = accumulate(begin(vc), end(vc), 0, [](int a, int b)
+		{
+			return a + (b * b);
+		});
+
+	cout << result << endl;
+
+}
+
+void sumkvadratnechet(vector<int>& vc)
+{
+
+	int sum = 0;
+
+	for (int i = 0; i < vc.size() - 1; i++)
+	{
+		sum += (vc[i] * vc[i]);
+	}
+
+	cout << sum << endl;
+}
+
+void switchf(vector<int>& vc1, vector<int>& vc2)
+{
+	bool var = true;
+
+	do
+	{
+		cout << "Выберите функцию: " << endl;
+		cout << "1. Умножение векторов" << endl;
+		cout << "2. Сложение векторов" << endl;
+		cout << "3. Сумма квадратов первого вектора" << endl;
+		cout << "4. Сумма квадратов второго вектора" << endl << endl;
+
+		int choice;
+		int choicesec;
+		cin >> choice;
+
+		switch (choice)
+		{
+		case 1:
+			cout << endl;
+			cout << "Умножение векторов: " << endl;
+			umnozhenie(vc1, vc2);
+			break;
+		case 2:
+			cout << endl;
+			cout << "Сложение векторов: " << endl;
+			slozhenie(vc1, vc2);
+			break;
+		case 3:
+			cout << endl;
+			cout << "Сумма квадратов первого вектора: " << endl;
+			if (vc1.size() % 10 == 0)
+			{
+				sumkvadratchet(vc1);
+			}
+			else
+			{
+				sumkvadratnechet(vc1);
+			};
+			break;
+		case 4:
+			cout << endl;
+			cout << "Сумма квадратов второго вектора: " << endl;
+			if (vc2.size() % 10 == 0)
+			{
+				sumkvadratchet(vc2);
+			}
+			else
+			{
+				sumkvadratnechet(vc2);
+			};
+		}
+
+		cout << endl << endl;
+		cout << "1. Продолжить" << endl;
+		cout << "2. Завершить работу программы" << endl;
+		cin >> choicesec;
+		if (choicesec == 1) var = true;
+		if (choicesec != 1) var = false;
+
+	} while (var == true);
+}
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+	srand(time(NULL));
+
+	vector<int> vc1;
+	vector<int> vc2;
+
+
+	cout << "Введите количество элементов в первом векторе: " << endl;
+	generation(vc1);
+	cout << "Введите количество элементов во втором векторе: " << endl;
+	generation(vc2);
+
+	switchf(vc1, vc2);
+
+
+	return 0;
+
+}
